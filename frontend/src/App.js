@@ -4,6 +4,8 @@ import Header from "./components/Header";
 import ProductSection from "./components/ProductSection";
 import Sidebar from "./components/Sidebar";
 import { Routes, Route } from "react-router-dom";
+import ShoppingList from "./pages/ShoppingList";
+import Recommend from "./pages/Recommend";
 import SearchResults from "./pages/SearchResults";
 
 function App() {
@@ -15,9 +17,34 @@ function App() {
     const [safeway, setSafeway] = useState([]);
     const [tnt, setTnt] = useState([]);
 
+    const addToList = async (p) => {
+        try {
+            await axios.post("http://localhost:3001/shopping-list", {
+                // If you don’t currently return ids, leave these null for now
+                product_id: p.product_id ?? null,
+                store_id: p.store_id ?? null,
+
+                // snapshot fields from your joined /prices response
+                product_name: p.product,   // because backend returns p.name AS product
+                brand: p.brand,
+                unit: p.unit,
+                category: p.category,
+                store_name: p.store,
+                price: p.price,
+                on_sale: p.on_sale,
+                quantity: 1,
+            });
+        } catch (err) {
+            console.error("Failed to add to list:", err);
+        }
+    };
+
     useEffect(() => {
         // Only fetch shop data when you're on the Shop tab
         if (activeTab !== "shop") return;
+
+        
+          
 
         const fetchAll = async () => {
             try {
@@ -63,16 +90,39 @@ function App() {
                         element={
                             <>
                                 <Header />
-                                <ProductSection title="On Sale" products={onSaleProducts} />
-                                <ProductSection title="Save On Foods" products={saveOnFoods} />
-                                <ProductSection title="Safeway" products={safeway} />
-                                <ProductSection title="T&T" products={tnt} />
+
+                                <ProductSection
+                                    title="On Sale"
+                                    products={onSaleProducts}
+                                    onAddToList={addToList}
+                                />
+
+                                <ProductSection
+                                    title="Save On Foods"
+                                    products={saveOnFoods}
+                                    onAddToList={addToList}
+                                />
+
+                                <ProductSection
+                                    title="Safeway"
+                                    products={safeway}
+                                    onAddToList={addToList}
+                                />
+
+                                <ProductSection
+                                    title="T&T"
+                                    products={tnt}
+                                    onAddToList={addToList}
+                                />
                             </>
                         }
                     />
 
-                    {/* SEARCH PAGE — ONLY RESULTS */}
+
+                    
                     <Route path="/search" element={<SearchResults />} />
+                    <Route path="/list" element={<ShoppingList />} />
+                    <Route path="/recommend" element={<Recommend />} />
                 </Routes>
             </main>
         </div>

@@ -1,10 +1,11 @@
 import React from "react";
 import ProductCard from "./ProductCard";
 
-const ProductSection = ({ title, products }) => {
+const ProductSection = ({ title, products, onAddToList }) => {
     return (
         <section style={{ margin: "20px 0" }}>
             <h2>{title}</h2>
+
             <div
                 style={{
                     display: "flex",
@@ -15,7 +16,11 @@ const ProductSection = ({ title, products }) => {
                 }}
             >
                 {products.map((p, i) => (
-                    <ProductCard key={i} product={p} />
+                    <ProductCard
+                        key={i}
+                        product={p}
+                        onAddToList={onAddToList}
+                    />
                 ))}
             </div>
         </section>

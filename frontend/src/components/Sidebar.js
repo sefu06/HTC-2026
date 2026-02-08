@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const navItemStyle = (active) => ({
     display: "flex",
@@ -11,7 +12,10 @@ const navItemStyle = (active) => ({
     fontWeight: active ? 600 : 400,
 });
 
-export default function Sidebar({ activeTab, setActiveTab }) {
+export default function Sidebar() {
+    const navigate = useNavigate();
+    const location = useLocation();
+
     return (
         <aside
             style={{
@@ -30,22 +34,22 @@ export default function Sidebar({ activeTab, setActiveTab }) {
             </div>
 
             <div
-                style={navItemStyle(activeTab === "shop")}
-                onClick={() => setActiveTab("shop")}
+                style={navItemStyle(location.pathname === "/")}
+                onClick={() => navigate("/")}
             >
                 🛍️ Shop
             </div>
 
             <div
-                style={navItemStyle(activeTab === "list")}
-                onClick={() => setActiveTab("list")}
+                style={navItemStyle(location.pathname === "/list")}
+                onClick={() => navigate("/list")}
             >
                 📝 Shopping List
             </div>
 
             <div
-                style={navItemStyle(activeTab === "recommend")}
-                onClick={() => setActiveTab("recommend")}
+                style={navItemStyle(location.pathname === "/recommend")}
+                onClick={() => navigate("/recommend")}
             >
                 ⭐ Recommend
             </div>

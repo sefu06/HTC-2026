@@ -26,7 +26,7 @@ app.get("/test", async (req, res) => {
 
 app.get("/prices", async (req, res) => {
     try {
-        const { store, category } = req.query;
+        const { store, category, on_sale, search } = req.query;
 
         let query = `
       SELECT
@@ -54,6 +54,18 @@ app.get("/prices", async (req, res) => {
             values.push(category);
             conditions.push(`p.category = $${values.length}`);
         }
+
+        if (on_sale !== undefined) {
+            const boolOnSale = on_sale === "true" || on_sale === true;
+            values.push(boolOnSale);
+            conditions.push(`pr.on_sale = $${values.length}`);
+        }
+
+        if (search) {
+            values.push(`%${search}%`);
+            conditions.push(`p.name ILIKE $${values.length}`);
+          }
+      
     
         if (conditions.length > 0) {
             query += " WHERE " + conditions.join(" AND ");
@@ -71,5 +83,17 @@ app.get("/prices", async (req, res) => {
 
     }
 
+});
+
+app.get("/stores", async (req, res) => {
+    const result = await pool.query("SELECT name FROM stores ORDER BY name;");
+    res.json(result.rows); // [{name: "Costco"}, ...]
+});
+
+app.get("/categories", async (req, res) => {
+    const result = await pool.query(
+        "SELECT DISTINCT category FROM products WHERE category IS NOT NULL ORDER BY category;"
+    );
+    res.json(result.rows); // [{category: "Dairy"}, ...]
 });
 

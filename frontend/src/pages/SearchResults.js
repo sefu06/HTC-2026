@@ -9,7 +9,7 @@ function useQuery() {
     return new URLSearchParams(useLocation().search);
 }
 
-const SearchResults = () => {
+const SearchResults = ({ onAddToList }) => {
     const query = useQuery();
 
     const [results, setResults] = useState([]);
@@ -70,7 +70,7 @@ const SearchResults = () => {
                 }}
             >
                 {results.map((product, index) => (
-                    <ProductCard key={index} product={product} />
+                    <ProductCard key={index} product={product} onAddToList={onAddToList} />
                 ))}
             </div>
         </div>

@@ -8,6 +8,7 @@ import ShoppingList from "./pages/ShoppingList";
 import Recommend from "./pages/Recommend";
 import SearchResults from "./pages/SearchResults";
 import Login from "./pages/Login";
+import { Navigate } from "react-router-dom";
 import Signup from "./pages/Signup";
 
 function App() {
@@ -75,6 +76,13 @@ function App() {
 
     const handleSearch = (newFilters) => setFilters(newFilters);
 
+   
+
+    function ProtectedRoute({ children }) {
+        const token = localStorage.getItem("token");
+        return token ? children : <Navigate to="/login" replace />;
+    }
+
     return (
         <div style={{ display: "flex", overflowX: "hidden" }}>
             {!hideSidebar && <Sidebar />}
@@ -89,48 +97,58 @@ function App() {
                 }}
             >
                 <Routes>
+                    {/* Public */}
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
-                    {/* HOME PAGE */}
+
+                    {/* Protected */}
                     <Route
                         path="/"
                         element={
-                            <>
-                                <Header />
+                            <ProtectedRoute>
+                                <>
+                                    <Header />
 
-                                <ProductSection
-                                    title="On Sale"
-                                    products={onSaleProducts}
-                                    onAddToList={addToList}
-                                />
-
-                                <ProductSection
-                                    title="Save On Foods"
-                                    products={saveOnFoods}
-                                    onAddToList={addToList}
-                                />
-
-                                <ProductSection
-                                    title="Safeway"
-                                    products={safeway}
-                                    onAddToList={addToList}
-                                />
-
-                                <ProductSection
-                                    title="T&T"
-                                    products={tnt}
-                                    onAddToList={addToList}
-                                />
-                            </>
+                                    <ProductSection title="On Sale" products={onSaleProducts} onAddToList={addToList} />
+                                    <ProductSection title="Save On Foods" products={saveOnFoods} onAddToList={addToList} />
+                                    <ProductSection title="Safeway" products={safeway} onAddToList={addToList} />
+                                    <ProductSection title="T&T" products={tnt} onAddToList={addToList} />
+                                </>
+                            </ProtectedRoute>
                         }
                     />
 
+                    <Route
+                        path="/search"
+                        element={
+                            <ProtectedRoute>
+                                <SearchResults onAddToList={addToList} />
+                            </ProtectedRoute>
+                        }
+                    />
 
-                    
-                    <Route path="/search" element={<SearchResults />} />
-                    <Route path="/list" element={<ShoppingList />} />
-                    <Route path="/recommend" element={<Recommend />} />
+                    <Route
+                        path="/list"
+                        element={
+                            <ProtectedRoute>
+                                <ShoppingList />
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    <Route
+                        path="/recommend"
+                        element={
+                            <ProtectedRoute>
+                                <Recommend />
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    {/* Fallback */}
+                    <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
+
             </main>
         </div>
     );

@@ -36,7 +36,17 @@ export default function Login() {
     };
 
     return (
-        <div style={{ maxWidth: 420, margin: "60px auto", padding: 20 }}>
+        <div
+            style={{
+                minHeight: "100vh",        // full screen height
+                background: "#f4f6f8",     // your background color
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+            }}
+        >
+        <div style={{
+            width: 420, padding: 20 }}>
             <h2>Log in</h2>
 
             <form onSubmit={handleLogin} style={{ display: "grid", gap: 12 }}>
@@ -80,6 +90,7 @@ export default function Login() {
             <p style={{ marginTop: 14 }}>
                 No account? <Link to="/signup">Sign up</Link>
             </p>
-        </div>
+            </div>
+            </div>
     );
 }

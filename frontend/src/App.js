@@ -3,10 +3,12 @@ import axios from "axios";
 import Header from "./components/Header";
 import ProductSection from "./components/ProductSection";
 import Sidebar from "./components/Sidebar";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import ShoppingList from "./pages/ShoppingList";
 import Recommend from "./pages/Recommend";
 import SearchResults from "./pages/SearchResults";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 
 function App() {
     const [activeTab, setActiveTab] = useState("shop");
@@ -16,6 +18,8 @@ function App() {
     const [saveOnFoods, setSaveOnFoods] = useState([]);
     const [safeway, setSafeway] = useState([]);
     const [tnt, setTnt] = useState([]);
+    const location = useLocation();
+    const hideSidebar = location.pathname === "/login" || location.pathname === "/signup";
 
     const addToList = async (p) => {
             try {
@@ -73,10 +77,11 @@ function App() {
 
     return (
         <div style={{ display: "flex", overflowX: "hidden" }}>
-            <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+            {!hideSidebar && <Sidebar />}
 
             <main
                 style={{
+                    marginLeft: hideSidebar ? 0 : "0px",
                     flex: 1,
                     minWidth: 0,
                     padding: "20px 24px",
@@ -84,6 +89,8 @@ function App() {
                 }}
             >
                 <Routes>
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/signup" element={<Signup />} />
                     {/* HOME PAGE */}
                     <Route
                         path="/"

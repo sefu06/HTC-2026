@@ -1,7 +1,13 @@
 import React, { useEffect, useState, useMemo } from "react";
 import axios from "axios";
 
+
 export default function ShoppingList() {
+    const [people, setPeople] = useState(1);
+    const [shopsPerWeek, setShopsPerWeek] = useState(1);
+    const [audit, setAudit] = useState(null);
+    const [auditLoading, setAuditLoading] = useState(false);
+    const [auditErr, setAuditErr] = useState("");
     const [items, setItems] = useState([]);
 
     const fetchItems = async () => {
@@ -37,6 +43,24 @@ export default function ShoppingList() {
     // Optional: total per store
     const storeTotal = (storeItems) =>
         storeItems.reduce((sum, it) => sum + Number(it.price || 0) * Number(it.quantity || 1), 0);
+
+    const runAudit = async () => {
+        setAudit(null);
+        setAuditErr("");
+        setAuditLoading(true);
+
+        try {
+            const res = await axios.post("http://localhost:3001/shopping-list/audit", {
+                people,
+                shops_per_week: shopsPerWeek,
+            });
+            setAudit(res.data);
+        } catch (e) {
+            setAuditErr(e.response?.data || "Audit failed");
+        } finally {
+            setAuditLoading(false);
+        }
+      };
 
     return (
         <div>
@@ -106,6 +130,113 @@ export default function ShoppingList() {
                     ))}
                 </div>
             )}
+
+<div
+                style={{
+                    background: "#fff",
+                    border: "1px solid #ddd",
+                    borderRadius: 12,
+                    padding: 12,
+                    marginTop: 12,
+                    display: "flex",
+                    gap: 12,
+                    alignItems: "center",
+                    flexWrap: "wrap",
+                }}
+            >
+                <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                    <span>People:</span>
+                    <input
+                        type="number"
+                        min="1"
+                        value={people}
+                        onChange={(e) => setPeople(Number(e.target.value))}
+                        style={{ width: 80, padding: 6, borderRadius: 8, border: "1px solid #ccc" }}
+                    />
+                </div>
+
+                <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                    <span>Shopping trips / week:</span>
+                    <input
+                        type="number"
+                        min="0.25"
+                        step="0.25"
+                        value={shopsPerWeek}
+                        onChange={(e) => setShopsPerWeek(Number(e.target.value))}
+                        style={{ width: 90, padding: 6, borderRadius: 8, border: "1px solid #ccc" }}
+                    />
+                </div>
+
+                <button
+                    onClick={runAudit}
+                    disabled={auditLoading}
+                    style={{
+                        padding: "8px 12px",
+                        borderRadius: 10,
+                        border: "none",
+                        background: "#27ae60",
+                        color: "white",
+                        fontWeight: 700,
+                        cursor: "pointer",
+                    }}
+                >
+                    {auditLoading ? "Checking..." : "Am I buying too much?"}
+                </button>
+
+                {auditErr && <div style={{ color: "crimson" }}>{String(auditErr)}</div>}
+            </div>
+
+            {audit && (
+                <div
+                    style={{
+                        background: "#fff",
+                        border: "1px solid #ddd",
+                        borderRadius: 12,
+                        padding: 12,
+                        marginTop: 12,
+                    }}
+                >
+                    <div style={{ fontWeight: 800, marginBottom: 6 }}>AI Check</div>
+                    <div style={{ marginBottom: 10 }}>{audit.summary}</div>
+
+                    {audit.warnings?.length > 0 && (
+                        <>
+                            <div style={{ fontWeight: 700 }}>Warnings</div>
+                            <ul>
+                                {audit.warnings.map((w, idx) => (
+                                    <li key={idx}>{w}</li>
+                                ))}
+                            </ul>
+                        </>
+                    )}
+
+                    {audit.tips?.length > 0 && (
+                        <>
+                            <div style={{ fontWeight: 700 }}>Tips</div>
+                            <ul>
+                                {audit.tips.map((t, idx) => (
+                                    <li key={idx}>{t}</li>
+                                ))}
+                            </ul>
+                        </>
+                    )}
+
+                    {audit.reduce_suggestions?.length > 0 && (
+                        <>
+                            <div style={{ fontWeight: 700 }}>Consider reducing</div>
+                            <ul>
+                                {audit.reduce_suggestions.map((r, idx) => (
+                                    <li key={idx}>
+                                        <b>{r.item}</b>: {r.reason} (suggested qty: {r.suggested_qty})
+                                    </li>
+                                ))}
+                            </ul>
+                        </>
+                    )}
+                </div>
+            )}
+
+
         </div>
     );
 }

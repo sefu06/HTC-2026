@@ -63,7 +63,6 @@ export default function Recommend() {
         }
     };
 
-    // Prevent saving duplicates by title (simple MVP check)
     const isSaved = (title) => saved.some((x) => x.title === title);
 
     useEffect(() => {

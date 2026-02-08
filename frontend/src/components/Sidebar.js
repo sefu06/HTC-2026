@@ -21,38 +21,51 @@ export default function Sidebar() {
             style={{
                 width: "320px",
                 flexShrink: 0,
-                padding: "16px",
                 borderRight: "1px solid #eee",
-                height: "100vh",
+                minHeight: "100vh",      // ✅ change
                 position: "sticky",
                 top: 0,
-                background: "#fff",
+                background: "#79c78e",
+                overflowY: "auto",
             }}
         >
-            <div style={{ fontSize: "18px", fontWeight: 700, marginBottom: "16px" }}>
-                Grocery App
-            </div>
+            <div style={{ padding: "16px" }}>
+                <img
+                    src="/fridgefullogo.png"
+                    alt="Logo"
+                    style={{
+                        width: "120px",
+                        height: "120px",
+                        borderRadius: "50%",
+                        objectFit: "cover",
+                        display: "block",
+                        margin: "0 auto 20px auto",
+                        border: "5px solid white",
+                    }}
+                />
 
-            <div
-                style={navItemStyle(location.pathname === "/")}
-                onClick={() => navigate("/")}
-            >
-                🛍️ Shop
-            </div>
+                <div
+                    style={navItemStyle(location.pathname === "/")}
+                    onClick={() => navigate("/")}
+                >
+                    🛍️ Shop
+                </div>
 
-            <div
-                style={navItemStyle(location.pathname === "/list")}
-                onClick={() => navigate("/list")}
-            >
-                📝 Shopping List
-            </div>
+                <div
+                    style={navItemStyle(location.pathname === "/list")}
+                    onClick={() => navigate("/list")}
+                >
+                    📝 Shopping List
+                </div>
 
-            <div
-                style={navItemStyle(location.pathname === "/recommend")}
-                onClick={() => navigate("/recommend")}
-            >
-                ⭐ Recommend
+                <div
+                    style={navItemStyle(location.pathname === "/recommend")}
+                    onClick={() => navigate("/recommend")}
+                >
+                    ⭐ Recommend
+                </div>
             </div>
         </aside>
     );
 }
+  

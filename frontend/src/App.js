@@ -18,26 +18,26 @@ function App() {
     const [tnt, setTnt] = useState([]);
 
     const addToList = async (p) => {
-        try {
-            await axios.post("http://localhost:3001/shopping-list", {
-                // If you don’t currently return ids, leave these null for now
-                product_id: p.product_id ?? null,
-                store_id: p.store_id ?? null,
+            try {
+                await axios.post("http://localhost:3001/shopping-list", {
+                    // If you don’t currently return ids, leave these null for now
+                    product_id: p.product_id ?? null,
+                    store_id: p.store_id ?? null,
 
-                // snapshot fields from your joined /prices response
-                product_name: p.product,   // because backend returns p.name AS product
-                brand: p.brand,
-                unit: p.unit,
-                category: p.category,
-                store_name: p.store,
-                price: p.price,
-                on_sale: p.on_sale,
-                quantity: 1,
-            });
-        } catch (err) {
-            console.error("Failed to add to list:", err);
-        }
-    };
+                    // snapshot fields from your joined /prices response
+                    product_name: p.product,   // because backend returns p.name AS product
+                    brand: p.brand,
+                    unit: p.unit,
+                    category: p.category,
+                    store_name: p.store,
+                    price: p.price,
+                    on_sale: p.on_sale,
+                    quantity: 1,
+                });
+            } catch (err) {
+                console.error("Failed to add to list:", err);
+            }
+        };
 
     useEffect(() => {
         // Only fetch shop data when you're on the Shop tab

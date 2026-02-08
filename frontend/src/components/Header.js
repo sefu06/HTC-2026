@@ -49,52 +49,126 @@ const Header = ({ onSearch }) => {
     };
 
     return (
-        <header style={{ padding: "20px", backgroundColor: "#f5f5f5" }}>
-            <form onSubmit={handleSubmit} style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-                <input
-                    type="text"
-                    placeholder="Search products..."
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    style={{ padding: "8px", borderRadius: "8px", border: "1px solid #ccc", minWidth: 220 }}
-                />
+        <header style={{ position: "relative" }}>
+            {/* Green Banner */}
+            <div
+                style={{
+                    height: "100px",
+                    background: "linear-gradient(135deg,rgb(127, 209, 161), #27ae60)",
+            
+                }}
+            />
 
-                <select
-                    value={store}
-                    onChange={(e) => setStore(e.target.value)}
-                    style={{ padding: "8px", borderRadius: "8px", border: "1px solid #ccc", minWidth: 180 }}
+            {/* Search Card */}
+            <div
+                style={{
+                    position: "relative",
+                    marginTop: "-60px",
+                    padding: "0 20px 20px 20px",
+                }}
+            >
+                <div
+                    style={{
+                        background: "#fff",
+                        borderRadius: "16px",
+                        padding: "20px",
+                        boxShadow: "0 8px 20px rgba(0,0,0,0.1)",
+                    }}
                 >
-                    <option value="">All Stores</option>
-                    {stores.map((s) => (
-                        <option key={s} value={s}>
-                            {s}
-                        </option>
-                    ))}
-                </select>
+                    <form
+                        onSubmit={handleSubmit}
+                        style={{
+                            display: "flex",
+                            gap: "10px",
+                            flexWrap: "wrap",
+                            alignItems: "center",
+                        }}
+                    >
+                        <input
+                            type="text"
+                            placeholder="Search products..."
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            style={{
+                                padding: "10px",
+                                borderRadius: "10px",
+                                border: "1px solid #ddd",
+                                minWidth: 220,
+                                flexGrow: 1,
+                            }}
+                        />
 
-                <select
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                    style={{ padding: "8px", borderRadius: "8px", border: "1px solid #ccc", minWidth: 160 }}
-                >
-                    <option value="">All Categories</option>
-                    {categories.map((c) => (
-                        <option key={c} value={c}>
-                            {c}
-                        </option>
-                    ))}
-                </select>
+                        <select
+                            value={store}
+                            onChange={(e) => setStore(e.target.value)}
+                            style={{
+                                padding: "10px",
+                                borderRadius: "10px",
+                                border: "1px solid #ddd",
+                                minWidth: 180,
+                            }}
+                        >
+                            <option value="">All Stores</option>
+                            {stores.map((s) => (
+                                <option key={s} value={s}>
+                                    {s}
+                                </option>
+                            ))}
+                        </select>
 
-                <button type="submit" style={{ padding: "8px 12px", borderRadius: "8px" }}>
-                    Search
-                </button>
+                        <select
+                            value={category}
+                            onChange={(e) => setCategory(e.target.value)}
+                            style={{
+                                padding: "10px",
+                                borderRadius: "10px",
+                                border: "1px solid #ddd",
+                                minWidth: 160,
+                            }}
+                        >
+                            <option value="">All Categories</option>
+                            {categories.map((c) => (
+                                <option key={c} value={c}>
+                                    {c}
+                                </option>
+                            ))}
+                        </select>
 
-                <button type="button" onClick={handleClear} style={{ padding: "8px 12px", borderRadius: "8px" }}>
-                    Clear
-                </button>
-            </form>
+                        <button
+                            type="submit"
+                            style={{
+                                padding: "10px 16px",
+                                borderRadius: "10px",
+                                border: "none",
+                                background: "#27ae60",
+                                color: "white",
+                                fontWeight: 600,
+                                cursor: "pointer",
+                            }}
+                        >
+                            Search
+                        </button>
+
+                        <button
+                            type="button"
+                            onClick={handleClear}
+                            style={{
+                                padding: "10px 16px",
+                                borderRadius: "10px",
+                                border: "1px solid #ddd",
+                                background: "#fff",
+                                fontWeight: 500,
+                                cursor: "pointer",
+                            }}
+                        >
+                            Clear
+                        </button>
+                    </form>
+                </div>
+            </div>
         </header>
     );
+      
 };
 
 export default Header;

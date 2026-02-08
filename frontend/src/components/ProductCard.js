@@ -38,7 +38,26 @@ export default function ProductCard({ product, onAddToList }) {
             onMouseLeave={() => setHovered(false)}
         >
             {/* Normal card content */}
-            <div style={{ fontSize: "50px", textAlign: "center" }}>🛒</div>
+            <div
+                style={{
+                    width: "100%",
+                    height: "120px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginBottom: "8px",
+                }}
+            >
+                <img
+                    src={product.image_url || "/placeholder.jpeg"}
+                    alt={product.product}
+                    style={{
+                        maxWidth: "100%",
+                        maxHeight: "100%",
+                        objectFit: "contain",
+                    }}
+                />
+            </div>
             <div style={{ fontWeight: 600, textAlign: "center" }}>
                 {product.product}
             </div>

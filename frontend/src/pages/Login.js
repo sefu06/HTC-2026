@@ -45,8 +45,23 @@ export default function Login() {
                 alignItems: "center",
             }}
         >
+
         <div style={{
-            width: 420, padding: 20 }}>
+                width: 420, padding: 20
+            }}>
+                <img
+                    src="/fridgefullogo.png"
+                    alt="Logo"
+                    style={{
+                        width: "200px",
+                        height: "200px",
+                        borderRadius: "50%",
+                        objectFit: "cover",
+                        display: "block",
+                        margin: "0 auto 20px auto",
+                        border: "5px solid white",
+                    }}
+                />
             <h2>Log in</h2>
 
             <form onSubmit={handleLogin} style={{ display: "grid", gap: 12 }}>
